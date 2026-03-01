@@ -1,3 +1,5 @@
+pub mod distillation;
+pub mod dpo;
 pub mod optimizer;
 pub mod qlora;
 

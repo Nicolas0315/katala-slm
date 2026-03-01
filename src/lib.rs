@@ -1,4 +1,5 @@
 pub mod data;
+pub mod eval;
 pub mod inference;
 pub mod ks;
 pub mod model;
