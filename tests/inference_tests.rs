@@ -1,6 +1,6 @@
 use anyhow::Result;
-use katala_slm::model::{config::ModelConfig, transformer::TransformerModel};
 use candle_core::{DType, Tensor};
+use katala_slm::model::{config::ModelConfig, transformer::TransformerModel};
 
 #[test]
 fn model_generates_logits() -> Result<()> {
@@ -16,8 +16,8 @@ fn model_generates_logits() -> Result<()> {
         rms_norm_eps: 1e-6,
     };
     let model = TransformerModel::new(config.clone(), true)?;
-    let input = Tensor::from_vec(vec![1u32, 5, 10, 20], (1, 4), &model.device)?
-        .to_dtype(DType::U32)?;
+    let input =
+        Tensor::from_vec(vec![1u32, 5, 10, 20], (1, 4), &model.device)?.to_dtype(DType::U32)?;
     let logits = model.forward(&input)?;
     let (b, s, v) = logits.dims3()?;
     assert_eq!(b, 1);

@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use super::{
     confidence::{ConfidenceScore, ConfidenceScorer},
-    evidence::{EvidenceClassifier, EvidenceLevel},
+    evidence::{AxisScores, EvidenceClassifier, EvidenceLevel},
     source::{SourceAttribution, SourceAttributionTracker},
 };
 
@@ -10,6 +10,8 @@ use super::{
 pub struct VerifiedAnswer {
     pub answer: String,
     pub evidence_level: EvidenceLevel,
+    pub axis_scores: AxisScores,
+    pub composite_score: f32,
     pub sources: Vec<SourceAttribution>,
     pub confidence: f32,
     pub contraindications: Vec<String>,
@@ -29,14 +31,18 @@ impl Verifier {
         source_labels.extend(extra_sources.iter().cloned());
 
         let contraindications = self.detect_contraindications(prompt, answer);
-        let evidence_level = self.evidence.classify(answer, &source_labels);
+        let assessment = self
+            .evidence
+            .classify_with_context(prompt, answer, &source_labels);
         let ConfidenceScore { score } =
             self.confidence
-                .score(evidence_level, &contraindications, answer);
+                .score(assessment.evidence_level, &contraindications, answer);
 
         VerifiedAnswer {
             answer: answer.to_string(),
-            evidence_level,
+            evidence_level: assessment.evidence_level,
+            axis_scores: assessment.axis_scores,
+            composite_score: assessment.composite_score,
             sources,
             confidence: score,
             contraindications,

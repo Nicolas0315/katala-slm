@@ -20,7 +20,10 @@ fn evidence_classifier_ranks_correctly() {
     assert_eq!(level, EvidenceLevel::B);
 
     // No guidelines but has source → C
-    let level = classifier.classify("Limited data suggests...", &["PubMed case report".to_string()]);
+    let level = classifier.classify(
+        "Limited data suggests...",
+        &["PubMed case report".to_string()],
+    );
     assert_eq!(level, EvidenceLevel::C);
 
     // No sources, uncertain → D

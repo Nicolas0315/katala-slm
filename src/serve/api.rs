@@ -11,6 +11,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     inference::engine::{GenerateOptions, InferenceEngine},
+    ks::evidence::AxisScores,
     ks::verify::VerifiedAnswer,
 };
 
@@ -64,6 +65,8 @@ async fn generate_medical(
         .unwrap_or_else(|err| VerifiedAnswer {
             answer: format!("Generation failed: {err}"),
             evidence_level: crate::ks::evidence::EvidenceLevel::D,
+            axis_scores: AxisScores::new(0.0),
+            composite_score: 0.0,
             sources: vec![],
             confidence: 0.0,
             contraindications: vec!["internal_error".to_string()],

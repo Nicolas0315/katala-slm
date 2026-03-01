@@ -9,8 +9,7 @@ pub struct TokenizerWrapper {
 
 impl TokenizerWrapper {
     pub fn from_file(path: &str, eos_token_id: u32) -> Result<Self> {
-        let tokenizer =
-            Tokenizer::from_file(path).map_err(|e| anyhow::anyhow!("{e}"))?;
+        let tokenizer = Tokenizer::from_file(path).map_err(|e| anyhow::anyhow!("{e}"))?;
         Ok(Self {
             tokenizer,
             eos_token_id,
