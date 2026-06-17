@@ -13,6 +13,7 @@ try {
 
   $patterns = @(
     'C:\\Users\\ogosh',
+    'C:/Users/ogosh',
     '/Users/s30519',
     '100\.\d+\.\d+\.\d+',
     'sk-[A-Za-z0-9_-]{20,}',
