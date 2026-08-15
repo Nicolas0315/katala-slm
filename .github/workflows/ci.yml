@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  # The publish gate existed only as a script an operator had to remember to run,
+  # and the operator's own home paths reached the published tree anyway. Running it
+  # as a job is the difference between a checklist item and a gate.
+  no-instance-data:
+    uses: katalalab/.github/.github/workflows/instance-data-gate.yml@main
+
+  test:
+    name: cargo test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Run tests
+        run: cargo test --quiet

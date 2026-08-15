@@ -10,11 +10,16 @@ scripts/publish-preflight.ps1
 ```
 
 Runs, in order: `gitleaks detect --source .` (if installed) then a pattern scan over
-all git-tracked files (excluding the script itself) for: local machine paths
-(`C:\Users\ogosh`, `/Users/s30519`), Tailscale IPs (`100.x.x.x`), API-key-shaped
-strings (`sk-...`, `ghp_...`), and PEM/OpenSSH private-key headers. Any match should
-stop the publish — this is a medical-domain project (KS verification layer), so the
-bar for accidental leakage is higher than a typical repo.
+all git-tracked files for: home directory paths in either POSIX or Windows spelling,
+Tailscale IPs (`100.x.x.x`), API-key-shaped strings (`sk-...`, `ghp_...`), and
+PEM/OpenSSH private-key headers. Any match should stop the publish — this is a
+medical-domain project (KS verification layer), so the bar for accidental leakage is
+higher than a typical repo.
+
+Write placeholders (`$HOME`, `$env:USERPROFILE`, `/Users/youruser`) when a path has
+to appear in prose; those pass. The patterns are character classes rather than
+spelled-out directories, and the script no longer exempts itself, because a
+denylist that names the strings it is defending is a copy of the leak.
 
 ## Incident Response
 
