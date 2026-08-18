@@ -6,6 +6,27 @@
 
 Katala SLM is a Rust-first medical-domain small language model framework with a KS verification layer.
 
+## Scope and limits — read before using any output
+
+**This is a research framework. It is not clinical decision support and must not be
+used to make decisions about a patient.**
+
+The KS verification layer *labels* output. It does not gate it:
+
+- `verify()` returns the model's answer unchanged. A detected contraindication is
+  attached as a field; it does not suppress, alter, or block the answer.
+- Contraindication detection is **three illustrative keyword rules**
+  (pregnancy/isotretinoin, anticoagulant/NSAID, renal/metformin). It is a
+  demonstration of where such a check would sit, not a drug-interaction database.
+  Any phrasing that avoids those literal words produces an empty contraindication
+  list — that means "not checked", never "safe".
+- `confidence` and `evidence_level` are scores over retrieved evidence. A low score
+  reduces a number in the response; it does not stop the response.
+
+If you are building on this, the gating decision is yours to add and yours to own.
+The response carries `clinical_use: false` so that choice cannot be made by accident.
+
+
 ## Features
 - Decoder-only transformer core (GQA attention + RoPE + SwiGLU + RMSNorm)
 - Candle-based forward pass and inference loop
