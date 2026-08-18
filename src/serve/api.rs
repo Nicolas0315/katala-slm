@@ -63,6 +63,7 @@ async fn generate_medical(
         .engine
         .generate_verified(&req.prompt, options)
         .unwrap_or_else(|err| VerifiedAnswer {
+            clinical_use: false,
             answer: format!("Generation failed: {err}"),
             evidence_level: crate::ks::evidence::EvidenceLevel::D,
             axis_scores: AxisScores::new(0.0),

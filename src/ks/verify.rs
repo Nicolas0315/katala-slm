@@ -8,6 +8,13 @@ use super::{
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VerifiedAnswer {
+    /// Always false. This crate labels output; it does not gate it. `verify()` returns
+    /// the model's answer unchanged even when `contraindications` is non-empty, and the
+    /// contraindication set is three illustrative keyword rules rather than a
+    /// drug-interaction database — an empty list means "not checked", never "safe".
+    /// Carried in the response so a downstream consumer cannot treat this as clinical
+    /// decision support by accident.
+    pub clinical_use: bool,
     pub answer: String,
     pub evidence_level: EvidenceLevel,
     pub axis_scores: AxisScores,
@@ -39,6 +46,7 @@ impl Verifier {
                 .score(assessment.evidence_level, &contraindications, answer);
 
         VerifiedAnswer {
+            clinical_use: false,
             answer: answer.to_string(),
             evidence_level: assessment.evidence_level,
             axis_scores: assessment.axis_scores,
