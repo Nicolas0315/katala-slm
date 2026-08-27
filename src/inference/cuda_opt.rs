@@ -267,6 +267,7 @@ pub struct QuantizedKvEntry {
 }
 
 /// Memory usage estimator for different optimization configurations
+#[allow(clippy::too_many_arguments)]
 pub fn estimate_memory_mb(
     config: &CudaOptConfig,
     model_params: usize,

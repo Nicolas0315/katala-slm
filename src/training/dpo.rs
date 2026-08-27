@@ -3,7 +3,7 @@
 //! Uses KS40e's 18-axis evidence scores as preference signal:
 //! - Chosen response = high evidence level (A/B) + high confidence
 //! - Rejected response = low evidence level (C/D) + low confidence
-//! This removes the need for a separate reward model.
+//!   This removes the need for a separate reward model.
 
 use candle_core::{Result, Tensor};
 use serde::{Deserialize, Serialize};

@@ -26,6 +26,12 @@ The KS verification layer *labels* output. It does not gate it:
 If you are building on this, the gating decision is yours to add and yours to own.
 The response carries `clinical_use: false` so that choice cannot be made by accident.
 
+## Verified baseline — 2026-08-28
+
+`cargo fmt --check`, workspace check, strict clippy, and all 56 tests pass. Continual-learning regressions without automatic rollback now return `NeedsReview`; they are no longer reported as success.
+
+The useful KS lineage here is axis separation and explicit review state. Historical solver-majority or evidence-free promotion is intentionally not part of this repository.
+
 
 ## Features
 - Decoder-only transformer core (GQA attention + RoPE + SwiGLU + RMSNorm)

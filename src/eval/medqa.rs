@@ -163,12 +163,12 @@ impl BenchmarkHarness {
     /// Generate a formatted report
     pub fn report(&self, results: &BenchmarkResults) -> String {
         let mut report = String::new();
-        report.push_str(&format!("╔══════════════════════════════════════════╗\n"));
+        report.push_str("╔══════════════════════════════════════════╗\n");
         report.push_str(&format!(
             "║  Katala SLM Benchmark: {:>17} ║\n",
             results.dataset_name
         ));
-        report.push_str(&format!("╠══════════════════════════════════════════╣\n"));
+        report.push_str("╠══════════════════════════════════════════╣\n");
         report.push_str(&format!(
             "║  Accuracy:         {:>6.1}% ({}/{})    ║\n",
             results.accuracy * 100.0,
@@ -191,7 +191,7 @@ impl BenchmarkHarness {
             "║  Conf-Acc Corr:    {:>6.3}              ║\n",
             results.confidence_correct_correlation
         ));
-        report.push_str(&format!("╠══════════════════════════════════════════╣\n"));
+        report.push_str("╠══════════════════════════════════════════╣\n");
         report.push_str("║  Evidence Distribution:                  ║\n");
         for (level, count) in &results.evidence_distribution {
             report.push_str(&format!(
@@ -199,7 +199,7 @@ impl BenchmarkHarness {
                 level, count
             ));
         }
-        report.push_str(&format!("╚══════════════════════════════════════════╝\n"));
+        report.push_str("╚══════════════════════════════════════════╝\n");
         report
     }
 }
@@ -333,7 +333,7 @@ mod tests {
         ];
         let ece = compute_ece(&pairs, 10);
         assert!(
-            ece >= 0.0 && ece <= 1.0,
+            (0.0..=1.0).contains(&ece),
             "ECE should be in [0,1], got {ece}"
         );
     }

@@ -14,6 +14,9 @@ pub struct DatasetRecord {
 
 pub trait Dataset {
     fn len(&self) -> usize;
+    fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
     fn iter(&self) -> Box<dyn Iterator<Item = &DatasetRecord> + '_>;
 }
 
