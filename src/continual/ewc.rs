@@ -248,8 +248,6 @@ mod tests {
         f1.optimal_params.insert("w".into(), vec![0.0]);
         regularizer.consolidate(&f1);
 
-        let after_first = regularizer.accumulated_fisher.get("w").unwrap()[0];
-
         let mut f2 = FisherInformation::new("task2");
         f2.fisher_diag.insert("w".into(), vec![2.0]);
         f2.optimal_params.insert("w".into(), vec![1.0]);

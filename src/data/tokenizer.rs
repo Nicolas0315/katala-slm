@@ -37,7 +37,7 @@ impl TokenizerWrapper {
     }
 
     pub fn decode(&self, ids: &[u32]) -> Result<String> {
-        let tokens: Vec<u32> = ids.iter().copied().collect();
+        let tokens = ids.to_vec();
         self.tokenizer
             .decode(&tokens, true)
             .map_err(|e| anyhow::anyhow!("{e}"))

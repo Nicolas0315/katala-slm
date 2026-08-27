@@ -29,7 +29,10 @@ fn verified_answer_never_claims_clinical_use() {
         "Consider isotretinoin for severe acne",
         &[],
     );
-    assert!(!flagged.contraindications.is_empty(), "expected the pregnancy rule to fire");
+    assert!(
+        !flagged.contraindications.is_empty(),
+        "expected the pregnancy rule to fire"
+    );
     // The answer is returned untouched. This is the property the README now states,
     // pinned here so a later change cannot quietly turn labelling into gating — or
     // claim gating that does not exist.

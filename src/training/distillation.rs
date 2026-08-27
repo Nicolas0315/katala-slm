@@ -121,6 +121,7 @@ fn l2_normalize(x: &Tensor) -> Result<Tensor> {
 }
 
 /// Combined LRC distillation loss
+#[allow(clippy::too_many_arguments)]
 pub fn lrc_loss(
     student_logits: &Tensor,
     teacher_logits: &Tensor,

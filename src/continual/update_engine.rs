@@ -68,6 +68,7 @@ pub struct UpdateResult {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum UpdateStatus {
     Success,
+    NeedsReview,
     RolledBack,
     Skipped,
     Failed,
@@ -153,7 +154,7 @@ impl UpdateEngine {
         let status = if rolled_back {
             UpdateStatus::RolledBack
         } else if regression_detected {
-            UpdateStatus::Success // Manual review needed
+            UpdateStatus::NeedsReview
         } else {
             UpdateStatus::Success
         };
@@ -312,6 +313,25 @@ mod tests {
         assert!(result.rolled_back);
         assert_eq!(result.status, UpdateStatus::RolledBack);
         assert_eq!(engine.update_count(), 0); // Not counted
+    }
+
+    #[test]
+    fn regression_without_auto_rollback_requires_review() {
+        let config = UpdateEngineConfig {
+            max_regression: 0.02,
+            auto_rollback: false,
+            ..Default::default()
+        };
+        let mut engine = UpdateEngine::new(config);
+        let mut post = good_metrics();
+        post.medqa_accuracy = Some(0.70);
+
+        let plan = engine.plan_update(vec![test_source("manual-review")], 100);
+        let result = engine.execute_update(plan, good_metrics(), post, None);
+
+        assert!(result.regression_detected);
+        assert!(!result.rolled_back);
+        assert_eq!(result.status, UpdateStatus::NeedsReview);
     }
 
     #[test]

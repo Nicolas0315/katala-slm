@@ -89,9 +89,7 @@ impl MoMELayer {
 
             let mut token_output = Tensor::zeros((1, hidden), DType::F32, hidden_states.device())?;
 
-            for (_k, (&expert_idx, &weight)) in
-                expert_indices.iter().zip(weights.iter()).enumerate()
-            {
+            for (&expert_idx, &weight) in expert_indices.iter().zip(weights.iter()) {
                 if let Some(expert) = self.experts.get(expert_idx) {
                     let expert_out = expert.forward(&token_hidden)?;
                     let weighted = expert_out.affine(weight as f64, 0.0)?;
@@ -215,7 +213,7 @@ mod tests {
         let output = mome.forward(&input, false)?;
         for &util in &output.expert_utilization {
             assert!(
-                util >= 0.0 && util <= 1.0,
+                (0.0..=1.0).contains(&util),
                 "Utilization should be in [0,1], got {util}"
             );
         }
